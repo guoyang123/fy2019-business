@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.neuedu.dao.ILoginDao">
+
+ 
+  
+
+  <select id="isusernameexists" parameterType="string"
+   resultType="java.lang.Integer">
+  
+    select count(username) from admin where username=#{username}
+  
+  </select>
+  
+  
+    <select id="findAdminByUsernameAndPassword" parameterType="map"
+    resultType="com.neuedu.pojo.Admin">
+  
+    select id, username  from admin where username=#{username} and  password=#{password}
+  
+  </select>
+  
+   <select id="findByUsernameAndPasswordObj" parameterType="com.neuedu.pojo.Admin"
+    resultType="com.neuedu.pojo.Admin">
+  
+    select id, username  from admin where
+     username=#{username} and  password=#{password}
+  
+  </select>
+  
+  
+  <insert id="addAdmin" parameterType="admin" 
+  useGeneratedKeys="true">
+  
+  insert into admin(username,password) values(#{username},#{password})
+  
+  </insert>
+  
+  
+  <update id="updateAdmin" parameterType="admin">
+   
+   update admin set username=#{username} ,password=#{password} where id=#{id}
+   
+  </update>
+  
+    <update id="updateAdminbyActiate" parameterType="admin">
+   
+    update admin 
+    <set>
+     <if test="username!=null and username!='' ">
+      username=#{username}, 
+    </if>
+    <if test="password!=null and password!=''">
+      password=#{password} 
+    </if>
+    </set> 
+   
+   <where>
+     
+     <if test="id!=null">
+       id=#{id}
+     </if>
+        
+   </where>
+   
+    
+   
+  </update>
+  
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+  
+   delete from admin where id=#{id}
+  </delete>
+  
+  
+  <select id="findAll" resultType="admin">
+  
+   select id,username,password from admin
+  </select>
+  
+  
+  <!--  <select id="find" resultType="admin">
+  
+   select id,username,password from admin where id  <![CDATA[<]]>  3
+  </select> -->
+  
+    
+   <!-- 如果输入了username，按照username查询，否则查询全部 -->
+    <select id="find" parameterType="string" resultType="admin">
+    
+     select id, username ,password from admin 
+     <if test="_parameter!=null">
+      where username=#{username}
+     </if>
+     
+     
+    </select>
+    
+    
+    <!-- id 1,2,5 -->
+    
+    <select id="findByIds" parameterType="list" resultType="admin">
+     select id, username,password from admin 
+     <where>
+     
+       <if test="_parameter!=null and list.size()>0"> 
+      
+      id in 
+      <foreach   item="admin" open="(" close=")" separator="," collection="list">
+       
+       #{admin.id}
+      
+      </foreach>
+      
+      
+      
+      </if> 
+      
+      
+     
+     </where>
+     
+     
+    </select>
+    
+    
+
+
+
+</mapper>
