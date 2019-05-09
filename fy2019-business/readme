@@ -1,0 +1,31 @@
+                 id          parentid
+ 电子产品         1            0
+    家电          2            1
+    手机          3            1
+       iphone     4            3
+       huawei     5            3
+          p       6            5
+          m       7            5
+          ...
+       xiaomi      8            3
+       ...
+    电脑           9           1
+    ...
+
+id  parentid
+
+select * from category where parentid=1
+  2,3,9
+  select * from category where parentid=2
+
+  select * from category where parentid=3
+
+  select * from category where parentid=9
+
+
+
+ id   productid   quality  productprice  price
+ 1     2            3          10          30
+ 2     3            5          20          100
+
+ totalprice: 130

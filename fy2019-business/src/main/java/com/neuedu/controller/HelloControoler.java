@@ -1,14 +1,16 @@
 package com.neuedu.controller;
 
 import com.neuedu.config.AppConfig;
-import com.neuedu.dao.ILoginDao;
-import com.neuedu.pojo.Admin;
+import com.neuedu.dao.CartMapper;
+import com.neuedu.pojo.Cart;
+import com.neuedu.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 public class HelloControoler {
@@ -32,17 +34,19 @@ public class HelloControoler {
     }
 
     @RequestMapping("/login/{username}/{password}")
-    public  String  testrestful(@PathVariable("username") String username,@PathVariable("password")String password){
+    public  List<Cart>  testrestful(@PathVariable("username") String username,@PathVariable("password")String password){
 
-        return username+" "+password;
+        List<Cart> userList= cartMapper.selectAll();
+        return userList;
+
     }
+
 
     @Autowired
-    ILoginDao loginDao;
-    @RequestMapping(value = "/user/login")
-    public Admin login(String username,String password){
+    CartMapper cartMapper;
 
-        return loginDao.findAdminByUsernameAndPassword(username,password);
-    }
+
+
+
 
 }
