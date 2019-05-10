@@ -21,4 +21,14 @@ public class HelloController {
         return userList;
 
     }
+
+    @RequestMapping("/testlog")
+    public List<Cart> testlog(){
+
+        List<Cart> userList= cartMapper.selectAll();
+        int a=3/0;
+        return userList;
+
+    }
+
 }
