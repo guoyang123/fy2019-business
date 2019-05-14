@@ -30,4 +30,11 @@ public class ResponseCode {
     public static final  int EMAIL_EXISTS=3;
 
 
+    /**
+     *
+     * 未登录
+     * */
+    public static final  int NOT_LOGIN=99;
+
+
 }

@@ -52,10 +52,11 @@ public class MD5Utils {
         String resultString = null;
         try {
             //加盐值的MD5
-            resultString = new String(strObj+"businesssdafaqj23ou89ZXcj@#$@#$#@KJdjklj;D../dSF.,");
+            resultString = new String(strObj+"businesssdafaqj23ou89ZXcj@#$@#$#@KJdjklj;D../dSF.,&%@");
+
             MessageDigest md = MessageDigest.getInstance("MD5");
             // md.digest() 该函数返回值为存放哈希值结果的byte数组
-            resultString = byteToString(md.digest(strObj.getBytes()));
+            resultString = byteToString(md.digest(resultString.getBytes()));
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
         }
@@ -65,7 +66,7 @@ public class MD5Utils {
 
     public static void main(String[] args) {
 
-        System.out.println(getMD5Code("admin"));
+        System.out.println(getMD5Code("zhangsan"));
     }
 
 }
