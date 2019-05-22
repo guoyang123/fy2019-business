@@ -30,5 +30,16 @@ spring:
 mybatis:
   mapper-locations: classpath*:com/neuedu/mapper/*Mapper.xml
   config-location: classpath:mybatis-config.xml
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: countSql
+logging:
+  level:
+    com.neuedu.dao: debug
+
+
+
 
 

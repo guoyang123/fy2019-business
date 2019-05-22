@@ -30,7 +30,7 @@ public interface ICategoryService {
      *
      * */
 
-    public ServerResponse getCategoryById(@PathVariable("categoryId") Integer categoryId);
+    public ServerResponse getCategoryById( Integer categoryId);
 
     /**
      *
@@ -38,7 +38,13 @@ public interface ICategoryService {
      * categoryId
      *
      * */
-    public ServerResponse deepCategory(@PathVariable("categoryId") Integer categoryId);
+    public ServerResponse deepCategory( Integer categoryId);
+
+
+    /**
+     * 根据id查询类别
+     * */
+    public  ServerResponse<Category> selectCategory(Integer categoryId);
 
 
 }

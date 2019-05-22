@@ -87,8 +87,20 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.serverResponseBySuccess(categoryIds);
     }
 
+    @Override
+    public ServerResponse<Category> selectCategory(Integer categoryId) {
 
-     public Set<Category> findAllChildCategory(Set<Category> categorySet,Integer categoryId){
+        if(categoryId==null){
+            return ServerResponse.serverResponseByError(ResponseCode.ERROR,"类别id必传");
+        }
+
+
+        Category category= categoryMapper.selectByPrimaryKey(categoryId);
+        return ServerResponse.serverResponseBySuccess(category);
+    }
+
+
+    public Set<Category> findAllChildCategory(Set<Category> categorySet,Integer categoryId){
 
        //查看categoryId的类别信息
        Category category=categoryMapper.selectByPrimaryKey(categoryId);

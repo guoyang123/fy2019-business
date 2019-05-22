@@ -74,6 +74,9 @@ public class Cart {
      *
      * @mbg.generated
      */
+
+
+
     public Integer getId() {
         return id;
     }
