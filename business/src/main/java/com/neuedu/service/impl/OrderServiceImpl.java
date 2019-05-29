@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -65,6 +66,9 @@ public class OrderServiceImpl implements IOrderService {
     @Value("${business.imageHost}")
     private String imageHost;
 
+
+
+    @Transactional
     @Override
     public ServerResponse createOrder(Integer userId, Integer shippingId) {
 
@@ -77,6 +81,19 @@ public class OrderServiceImpl implements IOrderService {
          * step6:扣库存
          * step7:清空购物车中下单的商品
          * step8:返回OrderVO
+         *
+         *  try{
+         *      beginTrasaction();//开启事务
+         *      xx
+         *      xx
+         *
+         *
+         *      commit();
+         *  }catch(){
+         *      rollback();
+         *  }
+         *
+         *
          * */
 
         //step1: 参数非空校验
@@ -114,6 +131,9 @@ public class OrderServiceImpl implements IOrderService {
         if(!serverResponse1.isSuccess()){
             return serverResponse1;
         }
+
+       //int a=3/0;
+
        //扣库存
         reduceProductStock(orderItemList);
 

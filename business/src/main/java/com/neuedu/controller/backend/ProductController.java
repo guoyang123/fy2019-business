@@ -27,15 +27,7 @@ public class ProductController {
     @RequestMapping(value = "save.do")
     public ServerResponse addOrUpdate(Product product, HttpSession session){
 
-        User user=(User) session.getAttribute(Const.CURRENT_USER);
-        if(user==null){
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN,"未登录");
-        }
 
-        int role=user.getRole();
-        if(role== RoleEnum.ROLE_USER.getRole()){
-            return ServerResponse.serverResponseByError(ResponseCode.ERROR,"权限不足");
-        }
       return productService.addOrUpdate(product);
 
 
@@ -56,15 +48,7 @@ public class ProductController {
                                 @RequestParam(name = "pageSize",required = false,defaultValue = "10")Integer pageSize,
                                 HttpSession session){
 
-        User user=(User) session.getAttribute(Const.CURRENT_USER);
-        if(user==null){
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN,"未登录");
-        }
 
-        int role=user.getRole();
-        if(role== RoleEnum.ROLE_USER.getRole()){
-            return ServerResponse.serverResponseByError(ResponseCode.ERROR,"权限不足");
-        }
 
 
         return productService.search(productName, productId, pageNum, pageSize);

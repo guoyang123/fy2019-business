@@ -3,6 +3,7 @@ server:
   servlet:
     context-path: /
 
+
 limit:
   minMoney: 2
   maxMoney: 100
@@ -38,6 +39,25 @@ pagehelper:
 logging:
   level:
     com.neuedu.dao: debug
+
+### 配置redis连接池参数
+redis:
+  max:
+    total: 8
+    idle: 8
+  min:
+    idle: 2
+  test:
+    borrow: true
+    return: true
+  ip: 47.95.119.164
+  port: 5379
+  password: Qinfo20180507@
+  timeout: 2000
+
+# redis.conf 1.port 2.bind 0.0.0.0 3.requirepass newpassword
+
+
 
 
 

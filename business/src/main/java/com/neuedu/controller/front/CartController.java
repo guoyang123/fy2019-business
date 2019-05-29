@@ -28,12 +28,8 @@ public class CartController {
                                   @PathVariable("count")Integer count,
                                   HttpSession session){
 
-        User user=(User) session.getAttribute(Const.CURRENT_USER);
-        if(user==null){
-            return ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN,"未登录");
-        }
 
-
+    User user=(User)session.getAttribute(Const.CURRENT_USER);
 
         return  cartService.addProductToCart(user.getId(),productId,count);
    }

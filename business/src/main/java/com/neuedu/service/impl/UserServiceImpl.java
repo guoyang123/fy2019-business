@@ -7,6 +7,7 @@ import com.neuedu.dao.UserMapper;
 import com.neuedu.pojo.User;
 import com.neuedu.service.IUserService;
 import com.neuedu.utils.MD5Utils;
+import com.neuedu.utils.RedisApi;
 import com.neuedu.utils.TokenCache;
 import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    RedisApi redisApi;
 
     @Override
     public ServerResponse register(User user) {
@@ -123,7 +127,8 @@ public class UserServiceImpl implements IUserService {
 
         // 生成token
        String token= UUID.randomUUID().toString();
-        TokenCache.set("username:"+username,token);
+       // TokenCache.set("username:"+username,token);
+        redisApi.setex("username:"+username,12*3600,token);
         return ServerResponse.serverResponseBySuccess(token);
     }
 
@@ -142,7 +147,8 @@ public class UserServiceImpl implements IUserService {
         }
 
          //是否修改的自己的账号
-        String token=TokenCache.get("username:"+username);
+       // String token=TokenCache.get("username:"+username);
+        String token=redisApi.get("username:"+username);
         if(token==null){
             return  ServerResponse.serverResponseByError(ResponseCode.ERROR,"不能修改别人的密码或者token已经过期");
         }
