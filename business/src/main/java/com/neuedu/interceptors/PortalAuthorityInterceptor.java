@@ -5,10 +5,13 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.pojo.User;
 import com.neuedu.utils.Const;
 import com.neuedu.utils.JsonUtils;
+import com.neuedu.utils.RedisApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,29 +25,55 @@ import java.io.PrintWriter;
 @Component
 public class PortalAuthorityInterceptor implements HandlerInterceptor {
 
+    @Autowired
+   RedisApi redisApi;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         HttpSession session=request.getSession();
-        User user=(User) session.getAttribute(Const.CURRENT_USER);
-        if(user==null){
-             response.reset();
-            try {
-                PrintWriter printWriter=response.getWriter();
-                ServerResponse serverResponse= ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN,"未登录");
-                String json= JsonUtils.obj2String(serverResponse);
-                printWriter.write(json);
-                printWriter.flush();
-                printWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    //    User user=(User) session.getAttribute(Const.CURRENT_USER);
 
-
-             return false;
+        Cookie[] cookies=request.getCookies();
+        if(cookies==null||cookies.length==0){
+            return nologin(response);
         }
 
-        return true;
+        for(Cookie c:cookies){
+            if(c.getName().equals(Const.CURRENT_USER)){
+                 String token=c.getValue();//用户存在redis中的key
+                 String userjson=redisApi.get(token);
+                 if(userjson==null){
+                     return nologin(response);
+                 }else{
+                     User user=JsonUtils.string2Obj(userjson,User.class);
+                     session.setAttribute(Const.CURRENT_USER,user);
+                     return true;
+                 }
+
+            }
+        }
+
+        return nologin(response);
+    }
+
+
+    private  boolean nologin(HttpServletResponse response){
+        response.reset();
+        try {
+            response.addHeader("Content-Type","application/json;charset=UTF-8");
+            PrintWriter printWriter=response.getWriter();
+            ServerResponse serverResponse= ServerResponse.serverResponseByError(ResponseCode.NOT_LOGIN,"未登录");
+            String json= JsonUtils.obj2String(serverResponse);
+            printWriter.write(json);
+            printWriter.flush();
+            printWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
     }
 
     @Override

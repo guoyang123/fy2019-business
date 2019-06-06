@@ -2,6 +2,7 @@ package com.neuedu;
 
 import com.google.common.collect.Lists;
 import com.neuedu.interceptors.AdminAuthroityInterceptor;
+import com.neuedu.interceptors.CommonInterceptor;
 import com.neuedu.interceptors.PortalAuthorityInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
@@ -16,27 +17,33 @@ public class MySpringBootConfig implements WebMvcConfigurer {
 
     // 拦截后台请求,验证用户是否登录
     @Autowired
-     AdminAuthroityInterceptor adminAuthroityInterceptor;
+    AdminAuthroityInterceptor adminAuthroityInterceptor;
 
     @Autowired
     PortalAuthorityInterceptor portalAuthorityInterceptor;
 
+    @Autowired
+    CommonInterceptor commonInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
+
+        //拦截所有请求
+        registry.addInterceptor(commonInterceptor).addPathPatterns("/**");
 
         // manage/category  manage/product manage/order
 
         registry.addInterceptor(adminAuthroityInterceptor)
                 .addPathPatterns("/manage/**");
 
-        List<String>   addPatterns= Lists.newArrayList();
+        List<String> addPatterns = Lists.newArrayList();
         addPatterns.add("/user/**");
         addPatterns.add("/cart/**");
         addPatterns.add("/order/**");
         addPatterns.add("/shipping/**");
 
-        List<String> excludePathPaterns=Lists.newArrayList();
+        List<String> excludePathPaterns = Lists.newArrayList();
         excludePathPaterns.add("/user/register.do");
         excludePathPaterns.add("/user/login/**");
         excludePathPaterns.add("/user/forget_get_question/**");
@@ -47,6 +54,8 @@ public class MySpringBootConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(portalAuthorityInterceptor).addPathPatterns(addPatterns)
                 .excludePathPatterns(excludePathPaterns);
+
+
 
     }
 }

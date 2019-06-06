@@ -57,6 +57,7 @@ public class RedisApi {
     public Long  expire(String key,int timeout){
 
         Jedis jedis=redisPool.getJedis();
+
         Long result=null;
         try{
             result=jedis.expire(key,timeout);
@@ -66,5 +67,20 @@ public class RedisApi {
         }
         return result;
     }
+
+    public void  clear(){
+
+        Jedis jedis=redisPool.getJedis();
+
+        Long result=null;
+        try{
+            jedis.flushDB();
+            redisPool.returnJedis(jedis);
+        }catch (Exception e){
+            redisPool.returnBrokenResource(jedis);
+        }
+
+    }
+
 
 }

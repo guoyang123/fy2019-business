@@ -5,13 +5,18 @@ import com.neuedu.common.ServerResponse;
 import com.neuedu.pojo.User;
 import com.neuedu.service.IUserService;
 import com.neuedu.utils.Const;
+import com.neuedu.utils.JsonUtils;
+import com.neuedu.utils.RedisApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user/")
@@ -36,16 +41,29 @@ public class UserController {
      * 登录接口
      * */
 
+    @Autowired
+    RedisApi redisApi;
     @RequestMapping(value = "login/{username}/{password}")
     public ServerResponse login(@PathVariable("username")String username,
                                 @PathVariable("password")String password,
-                                HttpSession session){
+                                HttpSession session, HttpServletResponse response){
 
 
         ServerResponse serverResponse=userService.login(username,password,1);
         //判断是否登录成功
         if(serverResponse.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,serverResponse.getData());
+            //session.setAttribute(Const.CURRENT_USER,serverResponse.getData());
+
+            String token= UUID.randomUUID().toString();
+            Cookie cookie=new Cookie(Const.CURRENT_USER,token);
+            cookie.setDomain("www.neuedu.com");
+            cookie.setPath("/");
+            cookie.setMaxAge(7*24*365);
+            response.addCookie(cookie);
+
+            //将用户信息写入redis
+            redisApi.setex(token,1800, JsonUtils.obj2String(serverResponse.getData()));
+
         }
 
         return serverResponse;
