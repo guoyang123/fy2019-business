@@ -16,13 +16,30 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements IUserService {
+public  class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     RedisApi redisApi;
+
+
+    @Override
+    public String testAOP(String param) {
+
+
+        try {
+            Thread.sleep(1000);
+            int a=3/0;
+            System.out.println("testAOP");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Long end= System.currentTimeMillis();
+
+        return param;
+    }
 
     @Override
     public ServerResponse register(User user) {
@@ -56,6 +73,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse login(String username, String password,int type) {
+
+
 
         //step1:参数校验
         if(username==null||username.equals("")){

@@ -3,6 +3,7 @@ package com.neuedu.controller;
 import com.neuedu.common.RedisPool;
 import com.neuedu.dao.CartMapper;
 import com.neuedu.pojo.Cart;
+import com.neuedu.service.IUserService;
 import com.neuedu.utils.RedisApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,5 +58,14 @@ public class HelloController {
     }
 
 
+
+    @Autowired
+    IUserService userService;
+    @RequestMapping("/testaop")
+    public  String  testAop(){
+
+
+        return userService.testAOP("xxxx");
+    }
 
 }

@@ -56,7 +56,7 @@ public class UserController {
 
             String token= UUID.randomUUID().toString();
             Cookie cookie=new Cookie(Const.CURRENT_USER,token);
-            cookie.setDomain("www.neuedu.com");
+            cookie.setDomain("www.imbession.top");
             cookie.setPath("/");
             cookie.setMaxAge(7*24*365);
             response.addCookie(cookie);

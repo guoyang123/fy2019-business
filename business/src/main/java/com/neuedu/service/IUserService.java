@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public interface IUserService {
 
+
+
+    public  String  testAOP(String param);
+
     /**
      * 注册接口
      * @param user

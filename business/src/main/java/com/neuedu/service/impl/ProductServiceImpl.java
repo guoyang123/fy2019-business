@@ -88,6 +88,8 @@ public class ProductServiceImpl implements IProductService {
            productName="%"+productName+"%";
        }
         Page page=PageHelper.startPage(pageNum,pageSize);
+
+
         List<Product> productList=productMapper.findProductsByNameAndId(productId, productName);
 
         List<ProductListVO> productListVOLsit= Lists.newArrayList();
