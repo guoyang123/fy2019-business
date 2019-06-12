@@ -1,6 +1,7 @@
 package com.neuedu.config;
 
 import com.neuedu.common.RedisPool;
+import com.neuedu.common.ShardedRedisPool;
 import com.neuedu.utils.RedisApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,19 @@ public class RedisConfig {
                 testborrow,
                 testreturn,ip,
                  port,
+                password,
+                timeout);
+    }
+
+    @Bean
+    public ShardedRedisPool shardedRedisPool(){
+
+        return new ShardedRedisPool(maxTotal,
+                maxIdle,
+                minIdle,
+                testborrow,
+                testreturn,ip,
+                port,
                 password,
                 timeout);
     }

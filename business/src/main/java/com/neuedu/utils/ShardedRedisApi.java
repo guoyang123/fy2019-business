@@ -1,14 +1,16 @@
 package com.neuedu.utils;
 
-import com.neuedu.common.RedisPool;
+import com.neuedu.common.ShardedRedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
-import redis.clients.jedis.Jedis;
+import org.springframework.stereotype.Component;
+import redis.clients.jedis.ShardedJedis;
 
-public class RedisApi {
+@Component
+public class ShardedRedisApi {
 
 
     @Autowired
-    RedisPool redisPool;
+    ShardedRedisPool shardedRedisPool;
 
     /**
      * 字符串
@@ -16,13 +18,13 @@ public class RedisApi {
 
     public String  set(String key,String value){
 
-        Jedis jedis=redisPool.getJedis();
+        ShardedJedis jedis=shardedRedisPool.getJedis();
         String result=null;
         try{
             result=jedis.set(key, value);
-            redisPool.returnJedis(jedis);
+            shardedRedisPool.returnJedis(jedis);
         }catch (Exception e){
-            redisPool.returnBrokenResource(jedis);
+            shardedRedisPool.returnBrokenResource(jedis);
         }
      return result;
     }
@@ -30,26 +32,26 @@ public class RedisApi {
     public String  get(String key){
 
 
-        Jedis jedis=redisPool.getJedis();
+        ShardedJedis jedis=shardedRedisPool.getJedis();
         String result=null;
         try{
             result=jedis.get(key);
-            redisPool.returnJedis(jedis);
+            shardedRedisPool.returnJedis(jedis);
         }catch (Exception e){
-            redisPool.returnBrokenResource(jedis);
+            shardedRedisPool.returnBrokenResource(jedis);
         }
         return result;
     }
 
     public String  setex(String key,int timeout,String value){
 
-        Jedis jedis=redisPool.getJedis();
+        ShardedJedis jedis=shardedRedisPool.getJedis();
         String result=null;
         try{
             result=jedis.setex(key,timeout, value);
-            redisPool.returnJedis(jedis);
+            shardedRedisPool.returnJedis(jedis);
         }catch (Exception e){
-            redisPool.returnBrokenResource(jedis);
+            shardedRedisPool.returnBrokenResource(jedis);
         }
         return result;
     }
@@ -57,31 +59,19 @@ public class RedisApi {
 
     public Long  expire(String key,int timeout){
 
-        Jedis jedis=redisPool.getJedis();
+        ShardedJedis jedis=shardedRedisPool.getJedis();
 
         Long result=null;
         try{
             result=jedis.expire(key,timeout);
-            redisPool.returnJedis(jedis);
+            shardedRedisPool.returnJedis(jedis);
         }catch (Exception e){
-            redisPool.returnBrokenResource(jedis);
+            shardedRedisPool.returnBrokenResource(jedis);
         }
         return result;
     }
 
-    public void  clear(){
 
-        Jedis jedis=redisPool.getJedis();
-
-        Long result=null;
-        try{
-            jedis.flushDB();
-            redisPool.returnJedis(jedis);
-        }catch (Exception e){
-            redisPool.returnBrokenResource(jedis);
-        }
-
-    }
 
 
 }

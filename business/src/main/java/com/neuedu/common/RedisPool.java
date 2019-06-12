@@ -9,6 +9,8 @@ public class RedisPool {
   private JedisPool jedisPool;
 
 
+
+
    public  RedisPool(){}
     public RedisPool(Integer maxTotal,Integer maxIdle,Integer minIdle,
                      boolean testborrow,

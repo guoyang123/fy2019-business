@@ -31,6 +31,7 @@ import org.apache.catalina.Server;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -216,6 +217,38 @@ public class OrderServiceImpl implements IOrderService {
 
 
         return "success";
+    }
+
+    @Override
+    public List<Order> closeOrder(String closeOrderDate) {
+
+        List<Order> orders=orderMapper.selectOrdersByCreateTime(closeOrderDate);
+
+        if(orders==null||orders.size()==0){
+            return null;
+        }
+
+        for(Order order:orders){
+            //查询订单明细，恢复商品库存
+            List<OrderItem> orderItemList=orderItemMapper.findOrderItemByOrderNo(order.getOrderNo());
+            for(OrderItem orderItem:orderItemList){//遍历订单明细，恢复商品库存
+                ServerResponse<Product> productServerResponse=productService.findProductById(orderItem.getProductId());
+                if(!productServerResponse.isSuccess()){//商品不存在
+                    continue;
+                }
+                Product product=productServerResponse.getData();
+                product.setStock(product.getStock()+orderItem.getQuantity());
+                productService.reduceSotck(product.getId(),product.getStock());
+            }
+
+            //关闭订单
+            orderMapper.closeOrder(order.getId());
+        }
+
+
+
+
+        return null;
     }
 
 

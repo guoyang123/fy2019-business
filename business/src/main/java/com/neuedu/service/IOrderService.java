@@ -1,7 +1,9 @@
 package com.neuedu.service;
 
 import com.neuedu.common.ServerResponse;
+import com.neuedu.pojo.Order;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IOrderService {
@@ -19,5 +21,14 @@ public interface IOrderService {
      * 支付回调接口
      * */
     public String  callback(Map<String,String> requestParams);
+
+    /**
+     *
+     * 查询需要关闭的订单
+     * */
+
+    public List<Order>  closeOrder(String closeOrderDate);
+
+
 
 }

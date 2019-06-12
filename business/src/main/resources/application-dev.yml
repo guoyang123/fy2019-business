@@ -57,6 +57,9 @@ redis:
 
 # redis.conf 1.port 2.bind 0.0.0.0 3.requirepass newpassword
 
+order:
+  close:
+    timeout: 2
 
 
 
