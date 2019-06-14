@@ -61,7 +61,8 @@ order:
   close:
     timeout: 2
 
-
+lock:
+  timeout: 20000
 
 
 

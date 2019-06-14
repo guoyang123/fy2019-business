@@ -15,12 +15,12 @@ public class BusinessApplicationTests {
 	public void contextLoads() {
 
 
-		 BigDecimal a=new BigDecimal("0.02");
-		BigDecimal b=new BigDecimal("0.03");
-		System.out.println(a.add(b));
 
 
 
 	}
 
+	public static void main(String[] args) {
+		System.out.println(0&1);
+	}
 }

@@ -65,10 +65,9 @@ public class HelloController {
     @RequestMapping("/testshardedjedis")
     public  String  testShardedJedis(){
 
-        for(int i=20;i<30;i++){
+        for(int i=0;i<20;i++){
             shardRedisApi.set("key"+i,"value"+i);
         }
-
 
         return shardRedisApi.get("key1");
     }

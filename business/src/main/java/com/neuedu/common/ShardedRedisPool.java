@@ -35,9 +35,11 @@ public class ShardedRedisPool {
 
 
         try {
-            //Scheme://username:password@IP:PORT/dbindex
+            // Scheme://username:password@IP:PORT/dbindex
             URI uri=new URI("http://GX:"+ URLEncoder.encode("Goal9#1326","UTF-8")+"@39.96.13.218:5379/0");
 
+
+            //   Scheme://username:password@IP:PORT/dbindex
             URI uri2=new URI("http://fy2019:"+ URLEncoder.encode(password,"UTF-8")+"@"+ip+":"+port+"/0");
 
 

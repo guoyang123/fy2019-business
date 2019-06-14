@@ -67,6 +67,8 @@ public class MD5Utils {
     public static void main(String[] args) {
 
         System.out.println(getMD5Code("zhangsan"));
+        System.out.println("e6f6fd40259777be8d82b01b559b22c1".length());
+
     }
 
 }
